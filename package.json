@@ -1,8 +1,11 @@
 {
   "name": "mlt-xml",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A module to construct Media Lovin' Toolkit (MLT) projects and export them in XML.",
-  "repository": "https://github.com/DavidRobertAnsart/melt-xml",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DavidRobertAnsart/mlt-xml"
+  },
   "author": "David Robert-Ansart <david.robertansart@gmail.com>",
   "license": "MIT",
   "main": "lib/index.js",
