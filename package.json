@@ -1,6 +1,6 @@
 {
   "name": "mlt-xml",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A module to construct Media Lovin' Toolkit (MLT) projects and export them in XML.",
   "repository": {
     "type": "git",
@@ -11,6 +11,12 @@
   "main": "lib/index.js",
   "module": "lib/index.mjs",
   "typings": "lib/index.d.ts",
+  "keywords": [
+    "mlt",
+    "melt",
+    "xml",
+    "mltToXml"
+  ],
   "files": [
     "lib"
   ],
