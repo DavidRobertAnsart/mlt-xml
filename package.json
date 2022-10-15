@@ -1,0 +1,38 @@
+{
+  "name": "mlt-xml",
+  "version": "1.0.0",
+  "description": "A module to construct Media Lovin' Toolkit (MLT) projects and export them in XML.",
+  "repository": "https://github.com/DavidRobertAnsart/melt-xml",
+  "author": "David Robert-Ansart <david.robertansart@gmail.com>",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "module": "lib/index.mjs",
+  "typings": "lib/index.d.ts",
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "prepare": "yarn build",
+    "build": "yarn rollup -c",
+    "lint": "eslint .",
+    "typescript": "tsc -p ."
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.38.0",
+    "@typescript-eslint/parser": "^5.38.0",
+    "esbuild": "^0.15.11",
+    "esbuild-runner": "^2.2.2",
+    "eslint": "^8.23.1",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-import-resolver-node": "^0.3.6",
+    "eslint-import-resolver-typescript": "^3.5.1",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "prettier": "^2.7.1",
+    "rollup": "^3.2.0",
+    "rollup-plugin-dts": "^4.2.3",
+    "rollup-plugin-esbuild": "^4.10.1",
+    "typescript": "^4.8.3"
+  },
+  "packageManager": "yarn@3.2.4"
+}
