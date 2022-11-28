@@ -32,15 +32,16 @@ export type Tractor = {
   // -- second relations group --
   filters?: Filter[];
   transitions?: Transition[];
-};
+} & Partial<Record<string, unknown>>;
 
 const TRACTOR_ATTRIBUTES_SET = new Set<Partial<keyof Tractor>>(['id', 'in', 'out', 'title']);
-const TRACTOR_PROPERTIES_SET = new Set<Partial<keyof Tractor>>(['producer']);
 export function tractorToXml(tractor: Tractor, depth = ''): string {
   const multitracks = tractor.multitrack !== undefined ? [multitrackToXml(tractor.multitrack, `${depth}  `)] : [];
   const tracks = (tractor.tracks || []).map((track) => trackToXml(track, `${depth}  `));
   const filters = (tractor.filters || []).map((filter) => filterToXml(filter, `${depth}  `));
   const transitions = (tractor.transitions || []).map((transition) => transitionToXml(transition, `${depth}  `));
 
-  return objToXml(tractor, 'tractor', TRACTOR_ATTRIBUTES_SET, TRACTOR_PROPERTIES_SET, [...multitracks, ...tracks, ...filters, ...transitions], depth);
+  const propertiesSet = new Set(Object.keys(tractor).filter((key) => !TRACTOR_ATTRIBUTES_SET.has(key) && key !== 'filters' && key !== 'transitions' && key !== 'multitrack' && key !== 'tracks'));
+
+  return objToXml(tractor, 'tractor', TRACTOR_ATTRIBUTES_SET, propertiesSet, [...multitracks, ...tracks, ...filters, ...transitions], depth);
 }
