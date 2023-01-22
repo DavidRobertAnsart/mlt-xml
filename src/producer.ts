@@ -43,7 +43,7 @@ export type AnyProducer<SubProducerName extends string, AdditionalAttributes ext
  * Some day it may also generate text (subtitles).
  * This is not to say a producer "synthesizes," rather that is an origin of data within the service network - that could be through synthesis or reading a stream.
  */
-export interface Producer extends AnyProducer<'producer', { bar: boolean }> {
+export interface Producer extends AnyProducer<'producer'> {
   // -- relations --
   elements?: Filter[];
 }
