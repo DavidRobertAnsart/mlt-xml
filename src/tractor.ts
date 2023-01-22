@@ -1,47 +1,52 @@
+import { elementsToXML } from './elements';
 import type { Filter } from './filter';
-import { filterToXml } from './filter';
+import { isFilter } from './filter';
+import type { XmlObj } from './lib/obj-to-xml';
 import { objToXml } from './lib/obj-to-xml';
 import type { Multitrack } from './multitrack';
-import { multitrackToXml } from './multitrack';
+import { isMultitrack } from './multitrack';
 import type { Track } from './track';
-import { trackToXml } from './track';
+import { isTrack } from './track';
 import type { Transition } from './transition';
-import { transitionToXml } from './transition';
+import { isTransition } from './transition';
 
 /**
  * The tractor is a convenience object to manage a multitrack, track filters, and transitions.
  */
-export type Tractor = {
-  // -- inline attributes --
-  id: string;
-  /** When to start, what is started is service-specific */
-  in?: string;
-  /** When to stop */
-  out?: string;
-  title?: string;
+export interface Tractor
+  extends XmlObj<
+    '',
+    {
+      // -- inline attributes --
+      id: string;
+      /** When to start, what is started is service-specific */
+      in?: string;
+      /** When to stop */
+      out?: string;
+      title?: string;
 
-  // -- properties --
-  /** Holds a reference to an encapsulated producer */
-  producer?: string;
-
+      // -- properties --
+      /** Holds a reference to an encapsulated producer */
+      producer?: string;
+    } & Partial<Record<string, unknown>>
+  > {
   // -- first relations group --
   // Must have one
-  multitrack?: Multitrack;
-  tracks?: Track[];
+  elements: Array<Multitrack | Track | Filter | Transition>;
+}
 
-  // -- second relations group --
-  filters?: Filter[];
-  transitions?: Transition[];
-} & Partial<Record<string, unknown>>;
+export const isTractor = (obj: XmlObj): obj is Tractor => obj.name === 'tractor';
 
-const TRACTOR_ATTRIBUTES_SET = new Set<Partial<keyof Tractor>>(['id', 'in', 'out', 'title']);
+const TRACTOR_ATTRIBUTES_SET = new Set<string>(['id', 'in', 'out', 'title']);
 export function tractorToXml(tractor: Tractor, depth = ''): string {
-  const multitracks = tractor.multitrack !== undefined ? [multitrackToXml(tractor.multitrack, `${depth}  `)] : [];
-  const tracks = (tractor.tracks || []).map((track) => trackToXml(track, `${depth}  `));
-  const filters = (tractor.filters || []).map((filter) => filterToXml(filter, `${depth}  `));
-  const transitions = (tractor.transitions || []).map((transition) => transitionToXml(transition, `${depth}  `));
-
-  const propertiesSet = new Set(Object.keys(tractor).filter((key) => !TRACTOR_ATTRIBUTES_SET.has(key) && key !== 'filters' && key !== 'transitions' && key !== 'multitrack' && key !== 'tracks'));
-
-  return objToXml(tractor, 'tractor', TRACTOR_ATTRIBUTES_SET, propertiesSet, [...multitracks, ...tracks, ...filters, ...transitions], depth);
+  const propertiesSet = new Set(Object.keys(tractor.attributes).filter((key) => !TRACTOR_ATTRIBUTES_SET.has(key)));
+  const tracks = elementsToXML(
+    tractor.elements.filter((elem) => isMultitrack(elem) || isTrack(elem)),
+    depth,
+  );
+  const children = elementsToXML(
+    tractor.elements.filter((elem) => isFilter(elem) || isTransition(elem)),
+    depth,
+  );
+  return objToXml(tractor, TRACTOR_ATTRIBUTES_SET, propertiesSet, [...tracks, ...children], depth);
 }

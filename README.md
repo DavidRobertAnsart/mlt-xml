@@ -21,72 +21,99 @@ npm install mlt-xml --save
 ```typescript
 import { mltToXml } from 'mlt-xml';
 
-console.log(mltToXml({
-  title: 'watermarkOnVideo',
-  producers: [
-    {
-      id: 'video',
-      in: '0',
-      out: '1000',
-      resource: 'clip.mpeg',
-    },
-    {
-      id: 'watermark',
-      in: '0',
-      out: '1000',
-      resource: 'watermark.png',
-      mlt_service: 'qimage',
-      length: '1000',
-    },
-  ],
-  tractors: [
-    {
-      id: 'tractor0',
-      multitrack: {
-        id: 'multitrack0',
-        playlists: [
+console.log(
+  mltToXml({
+    title: 'watermarkOnVideo',
+    elements: [
+      {
+        name: 'producer',
+        attributes: {
+          id: 'video',
+          in: '0',
+          out: '1000',
+          resource: 'clip.mpeg',
+        },
+      },
+      {
+        name: 'producer',
+        attributes: {
+          id: 'watermark',
+          in: '0',
+          out: '1000',
+          resource: 'watermark.png',
+          mlt_service: 'qimage',
+          length: '1000',
+        },
+      },
+      {
+        name: 'tractor',
+        attributes: {
+          id: 'tractor0',
+        },
+        elements: [
           {
-            id: 'video_track',
-            in: '0',
-            out: '1000',
-            entries: [
+            name: 'multitrack',
+            attributes: {
+              id: 'multitrack0',
+            },
+            elements: [
               {
-                producer: 'video',
-                in: '0',
-                out: '1000',
+                name: 'playlist',
+                attributes: {
+                  id: 'video_track',
+                  in: '0',
+                  out: '1000',
+                },
+                elements: [
+                  {
+                    name: 'entry',
+                    attributes: {
+                      producer: 'video',
+                      in: '0',
+                      out: '1000',
+                    },
+                  },
+                ],
+              },
+              {
+                name: 'playlist',
+                attributes: {
+                  id: 'watermark_track',
+                  in: '0',
+                  out: '1000',
+                },
+                elements: [
+                  {
+                    name: 'entry',
+                    attributes: {
+                      producer: 'watermark',
+                      in: '0',
+                      out: '1000',
+                    },
+                  },
+                ],
               },
             ],
           },
           {
-            id: 'watermark_track',
-            in: '0',
-            out: '1000',
-            entries: [
-              {
-                producer: 'watermark',
-                in: '0',
-                out: '1000',
-              },
-            ],
+            name: 'transition',
+            attributes: {
+              id: 'transition0',
+              a_track: 0,
+              b_track: 1,
+              geometry: '85%/5%:10%x10%',
+              factory: 'loader',
+              progressive: 1,
+              mlt_service: 'composite',
+              fill: 1,
+              sliced_composite: 1,
+            },
           },
         ],
       },
-      transitions: [
-        {
-          id: 'transition0',
-          a_track: 0,
-          b_track: 1,
-          geometry: '85%/5%:10%x10%',
-          factory: 'loader',
-          progressive: 1,
-          mlt_service: 'composite',
-          fill: 1,
-          sliced_composite: 1,
-        },
-      ],
-    },
-  ],
-}));
+    ],
+  }),
+);
 ```
 
 Returns:
