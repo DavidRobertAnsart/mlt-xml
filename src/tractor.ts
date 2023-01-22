@@ -15,14 +15,14 @@ import { isTransition } from './transition';
  */
 export interface Tractor
   extends XmlObj<
-    '',
+    'tractor',
     {
       // -- inline attributes --
       id: string;
       /** When to start, what is started is service-specific */
-      in?: string;
+      in?: string | number;
       /** When to stop */
-      out?: string;
+      out?: string | number;
       title?: string;
 
       // -- properties --

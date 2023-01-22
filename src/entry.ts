@@ -17,9 +17,9 @@ export interface Entry
       /** Producer Id */
       producer: string;
       /** When to start, what is started is service-specific */
-      in?: string;
+      in?: string | number;
       /** When to stop */
-      out?: string;
+      out?: string | number;
     }
   > {
   // -- relations --
