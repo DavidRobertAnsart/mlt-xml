@@ -7,12 +7,6 @@ It has typescript definitions for the ressources used by the framework. You can 
 ## Install
 
 ```bash
-yarn add mlt-xml
-```
-
-or with npm
-
-```bash
 npm install mlt-xml --save
 ```
 
